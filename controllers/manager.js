@@ -1,5 +1,7 @@
-// importing model
+// 3rd party module
 import { validationResult } from "express-validator";
+
+// importing model
 import { DryItem, FreshItem, FrozenItem } from "../models/item.js";
 import Order from "../models/order.js";
 
@@ -90,10 +92,10 @@ export async function getAllItems(req, res, next) {
     // container to contain all of the items
     let allItems = [...allDry, ...allFresh, ...allFrozen];
 
-    return res.status(201).json({
+    return res.status(200).json({
       message: "All items fetched successfully",
       items: allItems,
-      statusCode: 201,
+      statusCode: 200,
     });
   } catch (error) {
     next(error);
@@ -105,10 +107,10 @@ export async function getAllFresh(req, res, next) {
     // fetchin all the fresh items from the database
     const allFresh = await FreshItem.find({});
 
-    return res.status(201).json({
+    return res.status(200).json({
       message: "All fresh items fetched successfully",
       items: allFresh,
-      statusCode: 201,
+      statusCode: 200,
     });
   } catch (error) {
     next(error);
@@ -120,10 +122,10 @@ export async function getAllDry(req, res, next) {
     // fetchin all the dry items from the database
     const allDry = await DryItem.find({});
 
-    return res.status(201).json({
+    return res.status(200).json({
       message: "All dry items fetched successfully",
       items: allDry,
-      statusCode: 201,
+      statusCode: 200,
     });
   } catch (error) {
     next(error);
@@ -135,10 +137,10 @@ export async function getAllFrozen(req, res, next) {
     // fetchin all the frozen items from the database
     const allFrozen = await FrozenItem.find({});
 
-    return res.status(201).json({
+    return res.status(200).json({
       message: "All frozen items fetched successfully",
       items: allFrozen,
-      statusCode: 201,
+      statusCode: 200,
     });
   } catch (error) {
     next(error);
@@ -150,10 +152,10 @@ export async function getFreshItem(req, res, next) {
     // fetching a fresh item by id in the database
     const freshItem = await FreshItem.findById(req.params.id);
 
-    return res.status(201).json({
+    return res.status(200).json({
       message: "Fresh item fetched successfully",
       item: freshItem,
-      statusCode: 201,
+      statusCode: 200,
     });
   } catch (error) {
     next(error);
@@ -165,10 +167,10 @@ export async function getDryItem(req, res, next) {
     // fetching a dry item by id in the database
     const dryItem = await DryItem.findById(req.params.id);
 
-    return res.status(201).json({
+    return res.status(200).json({
       message: "Dry item fetched successfully",
       item: dryItem,
-      statusCode: 201,
+      statusCode: 200,
     });
   } catch (error) {
     next(error);
@@ -177,13 +179,85 @@ export async function getDryItem(req, res, next) {
 
 export async function getFrozenItem(req, res, next) {
   try {
-    // fetching a fresh item by id in the database
+    // fetching a frozen item by id in the database
     const frozenItem = await FrozenItem.findById(req.params.id);
 
-    return res.status(201).json({
+    return res.status(200).json({
       message: "Frozen item fetched successfully",
       item: frozenItem,
-      statusCode: 201,
+      statusCode: 200,
+    });
+  } catch (error) {
+    next(error);
+  }
+}
+
+export async function deleteFreshItem(req, res, next) {
+  try {
+    // fetching a fresh item by id in the database
+    const freshItem = await FreshItem.findById(req.params.id);
+
+    if (!freshItem) {
+      return res.status(422).json({
+        message: "No such item exist in the database",
+        statusCode: 422,
+      });
+    }
+
+    // if item exist it will be deleted
+    await FreshItem.findByIdAndDelete(req.params.id);
+
+    return res.status(200).json({
+      message: "Fresh item deleted successfully",
+      statusCode: 200,
+    });
+  } catch (error) {
+    next(error);
+  }
+}
+
+export async function deleteDryItem(req, res, next) {
+  try {
+    // fetching a dry item by id in the database
+    const dryItem = await DryItem.findById(req.params.id);
+
+    if (!dryItem) {
+      return res.status(422).json({
+        message: "No such item exist in the database",
+        statusCode: 422,
+      });
+    }
+
+    // if item exist it will be deleted
+    await DryItem.findByIdAndDelete(req.params.id);
+
+    return res.status(200).json({
+      message: "Dry item deleted successfully",
+      statusCode: 200,
+    });
+  } catch (error) {
+    next(error);
+  }
+}
+
+export async function deleteFrozenItem(req, res, next) {
+  try {
+    // fetching a frozen item by id in the database
+    const frozenItem = await FrozenItem.findById(req.params.id);
+
+    if (!frozenItem) {
+      return res.status(422).json({
+        message: "No such item exist in the database",
+        statusCode: 422,
+      });
+    }
+
+    // if item exist it will be deleted
+    await FrozenItem.findByIdAndDelete(req.params.id);
+
+    return res.status(200).json({
+      message: "Frozen item deleted successfully",
+      statusCode: 200,
     });
   } catch (error) {
     next(error);
@@ -273,6 +347,31 @@ export async function getAllOrders(req, res, next) {
     return res.status(200).json({
       message: "All orders updated successfully",
       orders: allOrders,
+      statusCode: 200,
+    });
+  } catch (error) {
+    next(error);
+  }
+}
+
+export async function deleteOrder(req, res, next) {
+  try {
+    // fetching an order from the database
+    const isOrderExist = await Order.findById(req.params.id);
+
+    // if such order does not exist
+    if (!isOrderExist) {
+      return res.status(422).json({
+        message: "No such order exist in the database",
+        statusCode: 422,
+      });
+    }
+
+    // if order exist it will be deleted
+    await Order.findByIdAndDelete(req.params.id);
+
+    return res.status(200).json({
+      message: "Order deleted successfully",
       statusCode: 200,
     });
   } catch (error) {

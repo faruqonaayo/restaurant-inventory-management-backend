@@ -88,6 +88,15 @@ router.get("/item/dry/:id", managerController.getDryItem);
 // route to get a specific frozen item
 router.get("/item//frozen/:id", managerController.getFrozenItem);
 
+// route to delete a specific fresh item
+router.delete("/item/fresh/:id", managerController.deleteFreshItem);
+
+// route to delete a specific dry item
+router.delete("/item/dry/:id", managerController.deleteDryItem);
+
+// route to delete a specific frozen item
+router.delete("/item/frozen/:id", managerController.deleteFrozenItem);
+
 // route to place an order
 router.put(
   "/order",
@@ -128,5 +137,8 @@ router.post("/order/check", managerController.checkOrder);
 
 // route to view all orders
 router.get("/orders", managerController.getAllOrders);
+
+// route to delete an order
+router.delete("/order/:id", managerController.deleteOrder);
 
 export default router;
