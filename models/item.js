@@ -15,18 +15,21 @@ const itemSchema = {
 // schema for fresh items
 const freshItemSchema = new Schema({
   ...itemSchema,
+  type: { type: String, required: true, default: "fresh" },
   isOrganic: { type: Boolean, required: true },
 });
 
 // schema for dry items
 const dryItemSchema = new Schema({
   ...itemSchema,
+  type: { type: String, required: true, default: "dry" },
   packagingType: { type: String, required: true },
 });
 
 // schema for frozen items
 const frozenItemSchema = new Schema({
   ...itemSchema,
+  type: { type: String, required: true, default: "frozen" },
   minimumTemperature: { type: Number, required: true },
 });
 
