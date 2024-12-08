@@ -6,6 +6,7 @@ import cors from "cors";
 
 // importing custom routes
 import managerRoutes from "./routes/manager.js";
+import authRoutes from "./routes/auth.js";
 
 // express application
 const app = express();
@@ -22,6 +23,7 @@ app.use(cors());
 app.use(express.json());
 
 // using my routes as middleware
+app.use("/api/auth", authRoutes);
 app.use("/api/manager", managerRoutes);
 
 // route not found middleware
